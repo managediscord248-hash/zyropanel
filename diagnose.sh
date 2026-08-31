@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# ZYROCLOUD CONTROL PANEL - COMPREHENSIVE SYSTEM DIAGNOSTICS
+# ZYROCLOUD CONTROL PANEL - COMPREHENSIVE SYSTEM & DOCKER DIAGNOSTICS
 # ==============================================================================
 set -u
 
@@ -26,20 +26,45 @@ echo -n "CPU Cores: " && nproc 2>/dev/null || echo "N/A"
 echo "Memory Utilization:"
 free -h 2>/dev/null || cat /proc/meminfo | grep -E '^(MemTotal|MemFree|MemAvailable):'
 echo -e "\nDisk Utilization (/ and /var/lib/zyrocloud):"
-df -h / /var/lib/zyrocloud 2>/dev/null || df -h /
+df -h / /var/lib/zyrocloud /var/lib/docker 2>/dev/null || df -h /
 
-echo -e "\n${BOLD}3. DOCKER ENGINE STATUS:${NC}"
+echo -e "\n${BOLD}3. DOCKER ENGINE & RUNTIME STATUS:${NC}"
 if command -v docker >/dev/null 2>&1; then
-    docker --version
-    if docker info >/dev/null 2>&1; then
-        echo -e "${GREEN}✓ Docker daemon is running.${NC}"
-        echo -n "Active Containers: " && docker ps -q | wc -l
-        echo -n "Total Containers: " && docker ps -a -q | wc -l
+    docker --version 2>/dev/null || true
+
+    # Socket ping test
+    SOCKET_PING="UNREACHABLE"
+    if [ -S "/var/run/docker.sock" ]; then
+        if command -v curl >/dev/null 2>&1; then
+            PING_RESP=$(curl -s -m 2 --unix-socket /var/run/docker.sock http://localhost/_ping 2>/dev/null || echo "")
+            if [[ "$PING_RESP" =~ OK|ok ]]; then
+                SOCKET_PING="OK (Responsive)"
+            else
+                SOCKET_PING="NO_RESPONSE ($PING_RESP)"
+            fi
+        fi
     else
-        echo -e "${RED}✗ Docker daemon is unreachable.${NC}"
+        SOCKET_PING="MISSING_SOCKET_FILE"
+    fi
+    echo -e "Unix Socket API (/var/run/docker.sock): ${SOCKET_PING}"
+
+    # Process test
+    if pgrep -x dockerd >/dev/null 2>&1 || pidof dockerd >/dev/null 2>&1; then
+        echo -e "dockerd Process: ${GREEN}RUNNING (PID: $(pgrep -x dockerd 2>/dev/null || pidof dockerd))${NC}"
+    else
+        echo -e "dockerd Process: ${RED}NOT RUNNING${NC}"
+    fi
+
+    # CLI test
+    if docker info >/dev/null 2>&1; then
+        echo -e "Docker CLI info: ${GREEN}✓ SUCCESS${NC}"
+        echo -n "Active Containers: " && docker ps -q 2>/dev/null | wc -l
+        echo -n "Total Containers: " && docker ps -a -q 2>/dev/null | wc -l
+    else
+        echo -e "Docker CLI info: ${RED}✗ FAILED${NC}"
     fi
 else
-    echo -e "${RED}✗ Docker is not installed.${NC}"
+    echo -e "${RED}✗ Docker binary not found in PATH.${NC}"
 fi
 
 echo -e "\n${BOLD}4. LOCAL NODE AGENT STATUS:${NC}"
@@ -100,7 +125,7 @@ else
     echo -e "${RED}✗ Application Health Check: ${HEALTH_STATUS}${NC}"
 fi
 
-echo -e "\n${BOLD}8. RECENT CONTAINER / APP LOGS:${NC}"
+echo -e "\n${BOLD}8. RECENT BACKEND CONTAINER LOGS:${NC}"
 if command -v docker >/dev/null 2>&1; then
     docker logs --tail 20 zyrocloud-backend 2>/dev/null || echo "No zyrocloud-backend docker container running."
 fi

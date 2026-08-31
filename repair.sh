@@ -56,7 +56,7 @@ RETRY_COUNT=0
 HEALTH_OK=0
 
 while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3000/api/health || echo "000")
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3000/api/health 2>/dev/null || echo "000")
     if [ "$HTTP_CODE" -eq 200 ]; then
         HEALTH_OK=1
         break

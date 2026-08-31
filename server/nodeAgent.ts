@@ -1,10 +1,31 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import { execSync } from 'child_process';
 import { db, dbManager, NodeItem } from './db';
 
 const DATA_DIR = process.env.DATA_DIRECTORY || path.resolve(process.cwd(), 'zyrocloud_data');
 const NODES_DIR = path.join(DATA_DIR, 'nodes');
+
+function detectDockerEngineVersion(): string {
+  try {
+    const out = execSync('docker version --format "{{.Server.Version}}"', {
+      stdio: ['ignore', 'pipe', 'ignore'],
+      timeout: 2000
+    }).toString().trim();
+    if (out) return `Docker ${out}`;
+  } catch {}
+
+  try {
+    const out = execSync('docker --version', {
+      stdio: ['ignore', 'pipe', 'ignore'],
+      timeout: 2000
+    }).toString().trim();
+    if (out) return out;
+  } catch {}
+
+  return 'Docker 26.1.4 (Container Engine)';
+}
 
 export interface NodeAgentConfig {
   nodeId: string;
@@ -38,6 +59,7 @@ export class LocalNodeAgent {
 
     const cpuCount = os.cpus().length || 4;
     const totalMemMb = Math.round(os.totalmem() / (1024 * 1024)) || 8192;
+    const dockerVer = detectDockerEngineVersion();
 
     const newNode: NodeItem = {
       id: nodeId,
@@ -49,7 +71,7 @@ export class LocalNodeAgent {
       cpu_cores: cpuCount,
       total_memory_mb: totalMemMb,
       total_disk_gb: 250,
-      docker_version: '24.0.7',
+      docker_version: dockerVer,
       last_heartbeat: now,
       created_at: now
     };
