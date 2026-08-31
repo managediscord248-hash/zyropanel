@@ -1,0 +1,7 @@
+{
+  "name": "ZyroCloud Control Panel",
+  "description": "Self-hosted game-server hosting and management control panel with Docker lifecycle, real-time WebSocket console, isolated file management, backups, and Playit tunnel integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

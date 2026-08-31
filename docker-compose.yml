@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: zyrocloud-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-zyrocloud}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zyrocloud_secure_pass_123}
+      POSTGRES_DB: ${POSTGRES_DB:-zyrocloud_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-zyrocloud} -d ${POSTGRES_DB:-zyrocloud_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - zyrocloud-internal
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: zyrocloud-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://zyrocloud:zyrocloud_secure_pass_123@postgres:5432/zyrocloud_db}
+      APP_SECRET: ${APP_SECRET:-zyrocloud_super_secret_jwt_encryption_key_change_me_in_production_min32chars}
+      DATA_DIRECTORY: /var/lib/zyrocloud
+      SERVERS_DIRECTORY: /var/lib/zyrocloud/servers
+      BACKUPS_DIRECTORY: /var/lib/zyrocloud/backups
+      PLAYIT_DIRECTORY: /var/lib/zyrocloud/playit
+      DOCKER_HOST: unix:///var/run/docker.sock
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@zyrocloud.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ZyroCloud2026!SecureAdmin}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - zyrocloud_servers:/var/lib/zyrocloud/servers
+      - zyrocloud_backups:/var/lib/zyrocloud/backups
+      - zyrocloud_playit:/var/lib/zyrocloud/playit
+      - zyrocloud_logs:/var/lib/zyrocloud/logs
+    networks:
+      - zyrocloud-internal
+      - zyrocloud-game-net
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: zyrocloud-panel
+    restart: unless-stopped
+    ports:
+      - "${PANEL_PORT:-3000}:3000"
+    depends_on:
+      - backend
+    environment:
+      PORT: 3000
+      BACKEND_URL: http://backend:8000
+    networks:
+      - zyrocloud-internal
+
+volumes:
+  postgres_data:
+    name: zyrocloud_postgres_data
+  zyrocloud_servers:
+    name: zyrocloud_servers_data
+  zyrocloud_backups:
+    name: zyrocloud_backups_data
+  zyrocloud_playit:
+    name: zyrocloud_playit_data
+  zyrocloud_logs:
+    name: zyrocloud_logs_data
+
+networks:
+  zyrocloud-internal:
+    name: zyrocloud-internal
+    driver: bridge
+  zyrocloud-game-net:
+    name: zyrocloud-game-net
+    driver: bridge

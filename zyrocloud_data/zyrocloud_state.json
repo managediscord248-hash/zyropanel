@@ -1,0 +1,503 @@
+{
+  "users": [
+    {
+      "id": "usr-admin-0001",
+      "username": "admin",
+      "email": "admin@zyrocloud.local",
+      "password_hash": "$2b$10$mS2V6DnqBwlogHikGV0o9OyWFWYO56Eu8NiBL4Fsw52t.mPySIHBK",
+      "role": "ADMIN",
+      "is_active": true,
+      "has_usable_password": true,
+      "created_at": "2026-08-31T10:24:06.865Z",
+      "updated_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "usr-gamer-0002",
+      "username": "alex_gamer",
+      "email": "alex@zyrogaming.net",
+      "password_hash": "$2b$10$wpRhXI/YI3ZrxV77tenNKOZ1Hde50NGNhTWK7N87IJzGVv1MniYOe",
+      "role": "USER",
+      "is_active": true,
+      "has_usable_password": true,
+      "created_at": "2026-08-31T10:24:06.865Z",
+      "updated_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "usr-fc3311ba",
+      "username": "azmal",
+      "email": "managediscord248@gmail.com",
+      "password_hash": "$2b$10$7k7dPrqC1r//EinPX4Q1TeNTVG8CIBU/UBxOU9J8Pnthchb828DZC",
+      "role": "ADMIN",
+      "is_active": true,
+      "has_usable_password": true,
+      "created_at": "2026-08-31T12:05:01.004Z",
+      "updated_at": "2026-08-31T12:05:01.004Z"
+    }
+  ],
+  "oauth_accounts": [],
+  "nodes": [
+    {
+      "id": "node-master-01",
+      "name": "Local Node (Master)",
+      "ip_address": "127.0.0.1",
+      "daemon_port": 8000,
+      "auth_token": "master_auth_token_secret_9981",
+      "status": "ONLINE",
+      "cpu_cores": 8,
+      "total_memory_mb": 16384,
+      "total_disk_gb": 250,
+      "docker_version": "24.0.7",
+      "last_heartbeat": "2026-08-31T10:24:06.865Z",
+      "created_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "node-eu-west-02",
+      "name": "EU Frankfurt (Edge-02)",
+      "ip_address": "198.51.100.42",
+      "daemon_port": 8000,
+      "auth_token": "edge_eu_token_5521",
+      "status": "ONLINE",
+      "cpu_cores": 16,
+      "total_memory_mb": 32768,
+      "total_disk_gb": 500,
+      "docker_version": "24.0.7",
+      "last_heartbeat": "2026-08-31T10:24:06.865Z",
+      "created_at": "2026-08-31T10:24:06.865Z"
+    }
+  ],
+  "templates": [
+    {
+      "id": "tmpl-mc-paper",
+      "name": "Minecraft: Paper (High Performance)",
+      "game": "Minecraft",
+      "description": "Optimized PaperMC server with Spigot/Bukkit plugin compatibility and low latency.",
+      "docker_image": "itzg/minecraft-server:latest",
+      "default_port": 25565,
+      "default_ram_mb": 3072,
+      "default_cpu_limit": 2.5,
+      "startup_command": "java -Xms1G -Xmx3G -XX:+UseG1GC -jar paper.jar nogui",
+      "environment_variables": "{\"TYPE\":\"PAPER\",\"EULA\":\"TRUE\",\"VERSION\":\"1.20.4\",\"MEMORY\":\"3G\"}",
+      "config_templates": "{}",
+      "created_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "tmpl-mc-vanilla",
+      "name": "Minecraft: Vanilla",
+      "game": "Minecraft",
+      "description": "Standard Mojang Java Edition multiplayer environment.",
+      "docker_image": "itzg/minecraft-server:latest",
+      "default_port": 25566,
+      "default_ram_mb": 2048,
+      "default_cpu_limit": 2,
+      "startup_command": "java -Xms1G -Xmx2G -jar server.jar nogui",
+      "environment_variables": "{\"TYPE\":\"VANILLA\",\"EULA\":\"TRUE\",\"VERSION\":\"LATEST\"}",
+      "config_templates": "{}",
+      "created_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "tmpl-terraria",
+      "name": "Terraria: tShock Dedicated",
+      "game": "Terraria",
+      "description": "Multiplayer world server with server-side characters and admin tools.",
+      "docker_image": "ryshe/terraria:latest",
+      "default_port": 7777,
+      "default_ram_mb": 1536,
+      "default_cpu_limit": 1.5,
+      "startup_command": "./TerrariaServer.bin.x86_64 -config serverconfig.txt",
+      "environment_variables": "{\"WORLD_NAME\":\"ZyroWorld\",\"AUTOCREATE\":\"2\"}",
+      "config_templates": "{}",
+      "created_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "tmpl-rust",
+      "name": "Rust Dedicated Survival",
+      "game": "Rust",
+      "description": "High-intensity PvP/PvE survival world server.",
+      "docker_image": "didstopia/rust-server:latest",
+      "default_port": 28015,
+      "default_ram_mb": 8192,
+      "default_cpu_limit": 4,
+      "startup_command": "./RustDedicated -batchmode +server.port 28015 +server.maxplayers 60",
+      "environment_variables": "{\"RUST_SERVER_NAME\":\"ZyroCloud Rust Survival\",\"RUST_MAXPLAYERS\":\"60\"}",
+      "config_templates": "{}",
+      "created_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "tmpl-palworld",
+      "name": "Palworld Dedicated Server",
+      "game": "Palworld",
+      "description": "Unreal Engine based multiplayer creature collection server.",
+      "docker_image": "thijsvanloef/palworld-server-docker:latest",
+      "default_port": 8211,
+      "default_ram_mb": 10240,
+      "default_cpu_limit": 4,
+      "startup_command": "./PalServer.sh -port=8211 -players=32",
+      "environment_variables": "{\"SERVER_NAME\":\"ZyroCloud Palworld Zone\",\"PLAYERS\":\"32\"}",
+      "config_templates": "{}",
+      "created_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "tmpl-node-bot",
+      "name": "Node.js Discord/Game Bot",
+      "game": "Application",
+      "description": "Node.js 20 environment with npm package manager.",
+      "docker_image": "node:20-alpine",
+      "default_port": 8080,
+      "default_ram_mb": 512,
+      "default_cpu_limit": 1,
+      "startup_command": "npm start",
+      "environment_variables": "{\"NODE_ENV\":\"production\"}",
+      "config_templates": "{}",
+      "created_at": "2026-08-31T10:24:06.865Z"
+    }
+  ],
+  "servers": [
+    {
+      "id": "srv-mc-paper-01",
+      "name": "CyberSMP Survival [1.20.4]",
+      "description": "Primary survival multiplayer server with custom economy and land claims.",
+      "node_id": "node-master-01",
+      "template_id": "tmpl-mc-paper",
+      "owner_id": "usr-admin-0001",
+      "container_id": "zyro-mc-paper-01",
+      "status": "RUNNING",
+      "docker_image": "itzg/minecraft-server:latest",
+      "startup_command": "java -Xms1G -Xmx3G -XX:+UseG1GC -jar paper.jar nogui",
+      "environment_variables": "{\"TYPE\":\"PAPER\",\"EULA\":\"TRUE\",\"VERSION\":\"1.20.4\",\"MEMORY\":\"3G\"}",
+      "ram_limit_mb": 3072,
+      "cpu_limit": 2.5,
+      "disk_limit_gb": 25,
+      "auto_restart": true,
+      "created_at": "2026-08-31T10:24:06.865Z",
+      "updated_at": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "srv-terraria-02",
+      "name": "Terraria Hardmode Realm",
+      "description": "Community multiplayer world for boss fights.",
+      "node_id": "node-master-01",
+      "template_id": "tmpl-terraria",
+      "owner_id": "usr-gamer-0002",
+      "container_id": "zyro-terraria-02",
+      "status": "RUNNING",
+      "docker_image": "ryshe/terraria:latest",
+      "startup_command": "./TerrariaServer.bin.x86_64 -config serverconfig.txt",
+      "environment_variables": "{\"WORLD_NAME\":\"ZyroWorld\",\"AUTOCREATE\":\"2\"}",
+      "ram_limit_mb": 1536,
+      "cpu_limit": 1.5,
+      "disk_limit_gb": 10,
+      "auto_restart": false,
+      "created_at": "2026-08-31T10:24:06.865Z",
+      "updated_at": "2026-08-31T12:14:19.131Z"
+    }
+  ],
+  "server_ports": [
+    {
+      "id": "port-01",
+      "server_id": "srv-mc-paper-01",
+      "host_port": 25565,
+      "container_port": 25565,
+      "protocol": "TCP",
+      "is_primary": true
+    },
+    {
+      "id": "port-02",
+      "server_id": "srv-terraria-02",
+      "host_port": 7777,
+      "container_port": 7777,
+      "protocol": "TCP",
+      "is_primary": true
+    }
+  ],
+  "playit_tunnels": [
+    {
+      "id": "playit-01",
+      "server_id": "srv-mc-paper-01",
+      "status": "NOT_CONFIGURED",
+      "assigned_port": 25565,
+      "created_at": "2026-08-31T10:24:06.865Z",
+      "process_pid": null
+    },
+    {
+      "id": "playit-02",
+      "server_id": "srv-terraria-02",
+      "status": "NOT_CONFIGURED",
+      "assigned_port": 7777,
+      "created_at": "2026-08-31T10:24:06.865Z"
+    }
+  ],
+  "backups": [
+    {
+      "id": "bkp-mc-01",
+      "server_id": "srv-mc-paper-01",
+      "name": "Weekly_World_Snapshot_Full",
+      "file_path": "/app/applet/zyrocloud_data/backups/srv-mc-paper-01/backup_snapshot_01.tar.gz",
+      "size_bytes": 48291048,
+      "is_successful": true,
+      "created_at": "2026-08-29T10:24:06.956Z"
+    }
+  ],
+  "audit_logs": [
+    {
+      "id": "log-1788179413178-553",
+      "user_id": "usr-admin-0001",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged in.",
+      "timestamp": "2026-08-31T12:30:13.178Z"
+    },
+    {
+      "id": "log-1788178459132-932",
+      "user_id": "usr-gamer-0002",
+      "action": "POWER_START",
+      "resource_type": "SERVER",
+      "resource_id": "srv-terraria-02",
+      "ip_address": "127.0.0.1",
+      "details": "Executed start on 'Terraria Hardmode Realm'",
+      "timestamp": "2026-08-31T12:14:19.132Z"
+    },
+    {
+      "id": "log-1788177951590-937",
+      "user_id": "usr-gamer-0002",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-gamer-0002",
+      "ip_address": "127.0.0.1",
+      "details": "User alex_gamer logged in.",
+      "timestamp": "2026-08-31T12:05:51.590Z"
+    },
+    {
+      "id": "log-1788177949314-765",
+      "user_id": "usr-fc3311ba",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-fc3311ba",
+      "ip_address": "127.0.0.1",
+      "details": "User azmal logged out.",
+      "timestamp": "2026-08-31T12:05:49.314Z"
+    },
+    {
+      "id": "log-1788177942010-328",
+      "user_id": "usr-fc3311ba",
+      "action": "UPDATE_SETTINGS",
+      "resource_type": "SETTING",
+      "ip_address": "127.0.0.1",
+      "details": "Updated branding/panel settings",
+      "timestamp": "2026-08-31T12:05:42.010Z"
+    },
+    {
+      "id": "log-1788177916993-604",
+      "user_id": "usr-fc3311ba",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-fc3311ba",
+      "ip_address": "127.0.0.1",
+      "details": "User azmal logged in.",
+      "timestamp": "2026-08-31T12:05:16.993Z"
+    },
+    {
+      "id": "log-1788177904106-430",
+      "user_id": "usr-admin-0001",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged out.",
+      "timestamp": "2026-08-31T12:05:04.106Z"
+    },
+    {
+      "id": "log-1788177901005-840",
+      "user_id": "usr-admin-0001",
+      "action": "CREATE_USER",
+      "resource_type": "USER",
+      "resource_id": "usr-fc3311ba",
+      "ip_address": "127.0.0.1",
+      "details": "Created user azmal (ADMIN)",
+      "timestamp": "2026-08-31T12:05:01.005Z"
+    },
+    {
+      "id": "log-1788177856924-234",
+      "user_id": "usr-admin-0001",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged in.",
+      "timestamp": "2026-08-31T12:04:16.924Z"
+    },
+    {
+      "id": "log-1788177853468-984",
+      "user_id": "usr-gamer-0002",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-gamer-0002",
+      "ip_address": "127.0.0.1",
+      "details": "User alex_gamer logged out.",
+      "timestamp": "2026-08-31T12:04:13.468Z"
+    },
+    {
+      "id": "log-1788177737383-650",
+      "user_id": "usr-gamer-0002",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-gamer-0002",
+      "ip_address": "127.0.0.1",
+      "details": "User alex_gamer logged in.",
+      "timestamp": "2026-08-31T12:02:17.383Z"
+    },
+    {
+      "id": "log-1788177733782-257",
+      "user_id": "usr-admin-0001",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged out.",
+      "timestamp": "2026-08-31T12:02:13.782Z"
+    },
+    {
+      "id": "log-1788177717759-991",
+      "user_id": "usr-admin-0001",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged in.",
+      "timestamp": "2026-08-31T12:01:57.759Z"
+    },
+    {
+      "id": "log-1788177492046-846",
+      "user_id": "usr-admin-0001",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged out.",
+      "timestamp": "2026-08-31T11:58:12.046Z"
+    },
+    {
+      "id": "log-1788177276608-954",
+      "user_id": "usr-admin-0001",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged in.",
+      "timestamp": "2026-08-31T11:54:36.608Z"
+    },
+    {
+      "id": "log-1788177167292-971",
+      "user_id": "usr-gamer-0002",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-gamer-0002",
+      "ip_address": "127.0.0.1",
+      "details": "User alex_gamer logged out.",
+      "timestamp": "2026-08-31T11:52:47.292Z"
+    },
+    {
+      "id": "log-1788177142514-310",
+      "user_id": "usr-gamer-0002",
+      "action": "PLAYIT_START",
+      "resource_type": "PLAYIT",
+      "resource_id": "srv-terraria-02",
+      "ip_address": "127.0.0.1",
+      "details": "Started Playit tunnel",
+      "timestamp": "2026-08-31T11:52:22.514Z"
+    },
+    {
+      "id": "log-1788177125249-548",
+      "user_id": "usr-gamer-0002",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-gamer-0002",
+      "ip_address": "127.0.0.1",
+      "details": "User alex_gamer logged in.",
+      "timestamp": "2026-08-31T11:52:05.249Z"
+    },
+    {
+      "id": "log-1788177121964-911",
+      "user_id": "usr-admin-0001",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged out.",
+      "timestamp": "2026-08-31T11:52:01.964Z"
+    },
+    {
+      "id": "log-1788177114842-272",
+      "user_id": "usr-admin-0001",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged in.",
+      "timestamp": "2026-08-31T11:51:54.842Z"
+    },
+    {
+      "id": "log-1788173800060-72",
+      "user_id": "usr-gamer-0002",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-gamer-0002",
+      "ip_address": "127.0.0.1",
+      "details": "User alex_gamer logged out.",
+      "timestamp": "2026-08-31T10:56:40.060Z"
+    },
+    {
+      "id": "log-1788173479296-129",
+      "user_id": "usr-gamer-0002",
+      "action": "LOGIN",
+      "resource_type": "USER",
+      "resource_id": "usr-gamer-0002",
+      "ip_address": "127.0.0.1",
+      "details": "User alex_gamer logged in.",
+      "timestamp": "2026-08-31T10:51:19.296Z"
+    },
+    {
+      "id": "log-1788171864980-485",
+      "user_id": "usr-admin-0001",
+      "action": "LOGOUT",
+      "resource_type": "USER",
+      "resource_id": "usr-admin-0001",
+      "ip_address": "127.0.0.1",
+      "details": "User admin logged out.",
+      "timestamp": "2026-08-31T10:24:24.980Z"
+    },
+    {
+      "id": "log-001",
+      "user_id": "usr-admin-0001",
+      "action": "BOOTSTRAP",
+      "resource_type": "SYSTEM",
+      "ip_address": "127.0.0.1",
+      "details": "ZyroCloud Control Panel engine initialized with security baseline.",
+      "timestamp": "2026-08-31T10:24:06.865Z"
+    },
+    {
+      "id": "log-002",
+      "user_id": "usr-admin-0001",
+      "action": "CREATE_SERVER",
+      "resource_type": "SERVER",
+      "resource_id": "srv-mc-paper-01",
+      "ip_address": "127.0.0.1",
+      "details": "Created primary server CyberSMP Survival [1.20.4] on port 25565.",
+      "timestamp": "2026-08-31T10:24:06.865Z"
+    }
+  ],
+  "settings": {
+    "panel_name": "ZyroCloud Control Panel",
+    "logo_url": "",
+    "primary_color": "#00ffff",
+    "secondary_color": "#8b5cf6",
+    "accent_color": "#10b981",
+    "background_style": "dark_cyber",
+    "glow_intensity": "high",
+    "playit_enabled": "true",
+    "max_servers_per_user": "5",
+    "default_allocation_start": "25565",
+    "default_allocation_end": "25600"
+  }
+}
